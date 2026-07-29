@@ -1,127 +1,46 @@
 
+# Apuntes de Linux: Gestión y Ordenación de Archivos
 
-# 🐧 Mis Apuntes de Linux Unhatched (NDG / Cisco Networking Academy)
-
-¡Bienvenido/a a mi cuaderno de apuntes sobre **Linux Unhatched**! 🚀  
-Aquí registro los comandos, conceptos y arquitectura fundamental del sistema operativo Linux aprendidos en el curso de NDG.
+> **Nota:** Los directorios y archivos más grandes pueden mostrarse en Kilobytes, ya que mostrar su tamaño en bytes resultaría en un número demasiado grande. Por lo tanto, en el caso de un directorio, este número podría ser un múltiplo del tamaño de bloque utilizado por el sistema de archivos. El tamaño de bloque es el tamaño de una serie de datos almacenados en el sistema de archivos.
 
 ---
 
-## 📌 Tabla de Contenidos
+## 1. Estructura de la Salida de `ls -l`
 
-- [1. Introducción a Linux y Código Abierto](#1-introducción-a-linux-y-código-abierto)
-- [2. La Interfaz de Línea de Comandos (CLI) y la Shell](#2-la-interfaz-de-línea-de-comandos-cli-y-la-shell)
-- [3. Navegación en el Sistema de Archivos](#3-navegación-en-el-sistema-de-archivos)
-- [4. Gestión de Archivos y Directorios](#4-gestión-de-archivos-y-directorios)
-- [5. Permisos de Archivos y Usuarios](#5-permisos-de-archivos-y-usuarios)
-- [6. Banco de Preguntas y Respuestas Clave](#6-banco-de-preguntas-y-respuestas-clave)
+### Sello Horario o de Tiempo (*Timestamp*)
+Indica la fecha y hora en que el contenido del archivo se modificó por última vez:
 
----
+```bash
+drwxr-xr-x 2 root root 4096 Dec 7 2017
 
-## 1. Introducción a Linux y Código Abierto 💡
+Nombre del Archivo o Directorio
+​El campo final contiene el nombre del recurso:
 
-- **¿Qué es Linux?**: Es un sistema operativo libre y de código abierto (*Open Source*) basado en UNIX.
-- **Núcleo (Kernel)**: Es el corazón del sistema operativo que gestiona la comunicación entre el hardware del equipo y los programas.
-- **Distribuciones (Distros)**: Empaquetan el Kernel de Linux con herramientas del proyecto GNU y software adicional (ej. Ubuntu, Debian, Red Hat, CentOS, Arch Linux).
+Dec 7 2017 bootstrap.log
 
----
+En el caso de enlaces simbólicos (un archivo que apunta a otro archivo), el nombre del enlace se mostrará junto a una flecha (->) y la ruta del archivo original:
 
-## 2. La Interfaz de Línea de Comandos (CLI) y la Shell 📝
+lrwxrwxrwx. 1 root root 22 Nov 6 2012 /etc/grub.conf -> ../boot/grub/grub.conf
 
-- **Shell**: Es el intérprete de comandos que actúa como interfaz entre el usuario y el sistema operativo (la más popular es `bash`).
-- **Prompt o Indicador de Comandos**: Muestra información importante como el usuario actual, el nombre del equipo y el directorio de trabajo.
-  - `$` indica un usuario común.
-  - `#` indica el usuario administrador (*root*).
+2. Ordenar Archivos con ls
+​Por defecto, el resultado del comando ls se muestra ordenado alfabéticamente según el nombre del archivo. Sin embargo, se pueden aplicar diferentes opciones para modificar este comportamiento.
+​Las siguientes opciones se combinan con -l para mostrar los detalles relevantes de cada archivo:
 
-### Comandos básicos de información:
-- `whoami`: Muestra el nombre del usuario con el que estás autenticado.
-- `hostname`: Muestra el nombre del equipo dentro de la red.
-- `uname -a`: Muestra información detallada del sistema y la versión del Kernel.
-- `clear`: Limpia la pantalla de la terminal.
+Ordenar por Fecha/Sello de Tiempo (-t): Ordena los archivos comenzando por los más recientes (timestamp).
 
----
+ls -lt /var/log
 
-## 3. Navegación en el Sistema de Archivos 🗺️
+Ordenar por Tamaño (-S): Ordena los archivos de mayor a menor tamaño (size).
 
-El sistema de archivos de Linux tiene una estructura de árbol que comienza desde la raíz `/`.
+ls -lS /var/log
 
-### Comandos clave de navegación:
-- `pwd` (*Print Working Directory*): Muestra la ruta completa del directorio actual.
-- `ls` (*List*): Muestra el contenido (archivos y carpetas) del directorio actual.
-  - `ls -l`: Lista detallada (permisos, dueño, tamaño, fecha).
-  - `ls -a`: Muestra todos los archivos, incluyendo los ocultos (los que empiezan con `.`).
-- `cd` (*Change Directory*): Cambia de directorio.
-  - `cd /`: Va al directorio raíz.
-  - `cd ~` o solo `cd`: Va al directorio personal del usuario (*Home*).
-  - `cd ..`: Sube un nivel al directorio padre.
+Invertir el Orden (-r): Invierte el orden de cualquier tipo de clasificación (reverse).
 
----
+ls -lsr /var/log
 
-## 4. Gestión de Archivos y Directorios 📁
+Orden Alfabético Inverso (-r): Utilizando únicamente la opción -r, muestra los archivos en orden alfabético de la Z a la A.
 
-### Crear y Eliminar:
-- `mkdir nombre_carpeta`: Crea un nuevo directorio.
-- `touch nombre_archivo`: Crea un archivo vacío o actualiza la fecha de modificación.
-- `rm nombre_archivo`: Elimina un archivo.
-- `rmdir carpeta_vacía`: Elimina un directorio vacío.
-- `rm -r nombre_carpeta`: Elimina un directorio y todo su contenido de forma recursiva.
+(Al usar -r, el orden de los tamaños cambia de descendente a ascendente).
 
-### Copiar y Mover:
-- `cp origen destino`: Copia un archivo de un lugar a otro.
-- `mv origen destino`: Mueve o renombra un archivo/directorio.
-
-### Visualizar Contenido:
-- `cat archivo`: Muestra todo el contenido de un archivo en pantalla.
-- `head archivo`: Muestra las primeras 10 líneas de un archivo.
-- `tail archivo`: Muestra las últimas 10 líneas de un archivo.
-
----
-
-## 5. Permisos de Archivos y Usuarios 🔒
-
-Linux es un sistema multiusuario, por lo que cada archivo tiene propietarios y permisos definidos.
-
-### Tipos de usuarios:
-- **Usuario (u)**: El dueño del archivo.
-- **Grupo (g)**: El grupo de usuarios asignado al archivo.
-- **Otros (o)**: Todos los demás usuarios del sistema.
-
-### Tipos de permisos:
-- `r` (*Read* / Lectura): Permite ver el contenido.
-- `w` (*Write* / Escritura): Permite modificar o eliminar.
-- `x` (*Execute* / Ejecución): Permite ejecutar el archivo si es un programa o script.
-
-### Cambio de permisos y propietarios:
-- `chmod`: Modifica los permisos de lectura, escritura o ejecución.
-- `chown`: Cambia el propietario del archivo.
-- `sudo`: Ejecuta un comando con privilegios de administrador (*root*).
-
----
-
-## 6. Banco de Preguntas y Respuestas Clave ❓
-
-> **Q1: ¿Qué comando se utiliza para saber en qué directorio te encuentras actualmente?** > **R:** `pwd` (*Print Working Directory*).
-
-> **Q2: ¿Cuál es la diferencia entre `ls` y `ls -a`?** > **R:** `ls` muestra los archivos visibles, mientras que `ls -a` incluye también los archivos ocultos (que empiezan con un punto `.`).
-
-> **Q3: ¿Qué símbolo representa el directorio personal (Home) del usuario en la línea de comandos?** > **R:** El símbolo de la tilde de la eñe `~`.
-
-> **Q4: ¿Qué comando se usa para crear un directorio nuevo?** > **R:** `mkdir`.
-
-> **Q5: ¿Qué hace el comando `cd ..`?** > **R:** Retrocede un nivel hacia el directorio padre.
-
-> **Q6: ¿Qué comando permite ver las primeras líneas de un archivo de texto?** > **R:** `head`.
-
-> **Q7: ¿Qué significa la opción `-r` al usar el comando `rm`?** > **R:** Indica una eliminación recursiva, necesaria para borrar directorios que contienen archivos u otras carpetas.
-
-> **Q8: ¿Cuál es la función del comando `whoami`?** > **R:** Muestra el nombre del usuario actual del sistema.
-
-> **Q9: ¿Qué usuario posee todos los derechos y privilegios administrativos en un sistema Linux?** > **R:** El usuario `root`.
-
-> **Q10: ¿Qué comando te permite ejecutar tareas con permisos de superusuario o root?** > **R:** `sudo`.
-
----
-
-🎯 *Notas de Linux Unhatched guardadas y mantenidas desde Termux.*
-
+ls -r /var/log
 
