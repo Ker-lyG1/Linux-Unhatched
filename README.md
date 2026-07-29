@@ -44,3 +44,43 @@ Orden Alfabético Inverso (-r): Utilizando únicamente la opción -r, muestra lo
 
 ls -r /var/log
 
+
+# Linux Unhatched (Cisco)
+
+## Conceptos Básicos
+* **GUI:** Interfaz gráfica basada en íconos.
+* **CLI:** Línea de comandos; más rápida y eficiente.
+* **Comando:** Programa que ejecuta una acción en el sistema.
+* **Sintaxis:** `comando [opciones] [argumentos]`
+  * **Opciones:** Cambian el comportamiento del comando (ej. `-l`, `-r`). Se pueden combinar (ej. `-lr`).
+  * **Argumentos:** El objetivo sobre el que actúa el comando (ej. `ls Documents`).
+
+## Navegación
+* `/`: Directorio raíz (nivel superior).
+* `~`: Directorio de inicio (*Home*).
+* `pwd`: Muestra la ruta actual.
+* **Ruta Absoluta:** Inicia siempre con `/` (ej. `/home/sysadmin`).
+* **Ruta Relativa:** Depende de la ubicación actual, no empieza con `/` (ej. `cd Documents`).
+
+## Listado de Archivos (`ls`)
+* `ls`: Lista el contenido del directorio actual.
+* `ls -l`: Muestra el formato detallado (*long*).
+
+### Tipos de archivo (primer carácter en `ls -l`)
+* `d`: Directorio
+* `-`: Archivo ordinario (texto, imagen, ejecutable, comprimido)
+* `l`: Enlace simbólico
+* `s`: Socket
+* `p`: Tubería (*pipe*)
+* `b` / `c`: Dispositivo de bloque / carácter (hardware)
+
+### Campos de `ls -l`
+1. Tipo de archivo y permisos (`drwxr-xr-x`)
+2. Número de enlaces directos
+3. Propietario (usuario creador)
+4. Grupo propietario
+5. Tamaño (bytes)
+6. Sello de tiempo (*timestamp*)
+7. Nombre del archivo/directorio
+
+
